@@ -1,0 +1,5 @@
+# LOGS for Big Red Button
+
+Most of the big red button configs have measures that log automatically to the big red button git repo. the git repo in turn has a directory to store these logs. 
+
+The Nameing convention is the config name followed by the date. 
