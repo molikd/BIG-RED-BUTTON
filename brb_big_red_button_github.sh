@@ -2,7 +2,7 @@
 #VERSION: 0.3
 
 VERSION="0.3"
-NAME="Big-Red-Button"
+NAME="Big-Red-Button-Github"
 REPO="git@github.com:status-five/BIG-RED-BUTTON.git"
 REMOTES_INCOMING="github,master,git@github.com:status-five/BIG-RED-BUTTON.git gitlab,master,git@vcs.cshl.edu:dmolik/BIG-RED-BUTTON.git"
 REMOTES_OUTGOING="github,master,git@github.com:status-five/BIG-RED-BUTTON.git gitlab,master,git@vcs.cshl.edu:dmolik/BIG-RED-BUTTON.git"
