@@ -195,9 +195,9 @@ done
 rm -rf "$RELEASES_DIR/$NAME" || MSG "unable to remove releases";
 
 #update the config with the new version
+cd "$( which big_red_button.sh | sed "s/$(basename "$( which "big_red_button.sh" )" )//g" )" || MSG "problems with cding into big_red_buttons";
 FILE_VERSIONING $config
 MSG "config updated with new version";
-cd "$( which big_red_button.sh | sed "s/$(basename "$( which "big_red_button.sh" )" )//g" )" || MSG "problems with cding into big_red_buttons";
 git add . || MSG "big red button repo not able to add";
 git commit --allow-empty -am "updated versioning for config \"$config\", for $NAME, to $( echo "$version" | sed 's/\\//g' )"  || MSG "big red button not able to commit";
 git push --tags origin master || MSG "unable to push to big red button repo";
