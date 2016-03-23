@@ -54,13 +54,16 @@ VERSION_CLEANING() {
 FILE_VERSIONING() {
   spellings="version Version VERSION";
   for cap in $spellings; do 
-    sed -i "s/$cap $VERSION/$cap $version/g" $1;
-    sed -i "s/$cap:$VERSION/$cap:$version/g" $1;
-    sed -i "s/$cap: $VERSION/$cap: $version/g" $1;
-    sed -i "s/$cap=$VERSION/$cap=$version/g" $1;
-	sed -i "s/$cap=\"$VERSION\"/$cap=\"$version\"/g" $1;
-	sed -i "s/$cap=\'$VERSION\'/$cap=\'$version\'/g" $1;
-	sed -i "s/$cap => \'$VERSION\'/$cap => \'$version\'/g" $1;
+    sed -i "s/$cap $VERSION/$cap $version/g" $1;               #ex: version 0.0.0
+    sed -i "s/$cap:$VERSION/$cap:$version/g" $1;               #ex: version:0.0.0
+    sed -i "s/$cap: $VERSION/$cap: $version/g" $1;             #ex: version: 0.0.0
+    sed -i "s/$cap=$VERSION/$cap=$version/g" $1;               #ex: version=0.0.0
+	sed -i "s/$cap=\"$VERSION\"/$cap=\"$version\"/g" $1;       #ex: version="0.0.0"
+    sed -i "s/$cap=\"$VERSION\",/$cap=\"$version\",/g" $1;     #ex: version="0.0.0",
+	sed -i "s/$cap=\'$VERSION\'/$cap=\'$version\'/g" $1;       #ex: version='0.0.0'
+	sed -i "s/$cap => \'$VERSION\'/$cap => \'$version\'/g" $1; #ex: version => '0.0.0'
+    sed -i "s/\:$cap\: $VERSION/\:$cap\: $version/g" $1;       #ex: :version: 0.0.0
+	sed -i "s/@$cat\: $VERSION/@$cat\: $version/g" $1;         #ex: @version: 0.0.0
   done 
 }
 
@@ -140,7 +143,7 @@ git clone "$REPO" "$NAME" || { MSG "could not clone \"$NAME\" into releases, exi
 #fetch and merge all locations of repo 
 cd ~/.releases/$NAME || { MSG "could'nt find repo, exiting"; exit 1; }
 MSG "Starting Git source update";
-for remote_repo in "$REMOTES_INCOMING"; do
+for remote_repo in $REMOTES_INCOMING; do
   remote=$( echo $remote_repo | awk -F',' '{print $1}' );
   branch=$( echo $remote_repo | awk -F',' '{print $2}' );
   urlloc=$( echo $remote_repo | awk -F',' '{print $3}' );
@@ -183,7 +186,7 @@ MSG "Utilizing Special Instructions";
 SPECIAL_INSTRUCTIONS
 
 #push changes upstream
-for remote_repo in "$REMOTES_OUTGOING"; do
+for remote_repo in $REMOTES_OUTGOING; do
   remote=$( echo $remote_repo | awk -F',' '{print $1}' );
   branch=$( echo $remote_repo | awk -F',' '{print $2}' );
   urlloc=$( echo $remote_repo | awk -F',' '{print $3}' );
