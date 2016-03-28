@@ -37,7 +37,7 @@ CONTINUE() {
       Y|y|yes|Yes|YES )
       ;;
       N|n|no|No|NO )
-        MSG "NO ENTERED, exiting"; exit 1;
+        MSG "NO ENTERED, exiting"; rm -rf ~/.releases/$NAME ; exit 1;
       ;;
       *) 
         echo "Invalid input You entered: $cont" >&2;
@@ -54,16 +54,16 @@ VERSION_CLEANING() {
 FILE_VERSIONING() {
   spellings="version Version VERSION";
   for cap in $spellings; do 
-    sed -i "s/$cap $VERSION/$cap $version/g" $1;               #ex: version 0.0.0
-    sed -i "s/$cap:$VERSION/$cap:$version/g" $1;               #ex: version:0.0.0
-    sed -i "s/$cap: $VERSION/$cap: $version/g" $1;             #ex: version: 0.0.0
-    sed -i "s/$cap=$VERSION/$cap=$version/g" $1;               #ex: version=0.0.0
-	sed -i "s/$cap=\"$VERSION\"/$cap=\"$version\"/g" $1;       #ex: version="0.0.0"
-    sed -i "s/$cap=\"$VERSION\",/$cap=\"$version\",/g" $1;     #ex: version="0.0.0",
-	sed -i "s/$cap=\'$VERSION\'/$cap=\'$version\'/g" $1;       #ex: version='0.0.0'
-	sed -i "s/$cap => \'$VERSION\'/$cap => \'$version\'/g" $1; #ex: version => '0.0.0'
-    sed -i "s/\:$cap\: $VERSION/\:$cap\: $version/g" $1;       #ex: :version: 0.0.0
-	sed -i "s/@$cat\: $VERSION/@$cat\: $version/g" $1;         #ex: @version: 0.0.0
+    sed -i'' -e "s/$cap $VERSION/$cap $version/g" $1;               #ex: version 0.0.0
+    sed -i'' -e "s/$cap:$VERSION/$cap:$version/g" $1;               #ex: version:0.0.0
+    sed -i'' -e "s/$cap: $VERSION/$cap: $version/g" $1;             #ex: version: 0.0.0
+    sed -i'' -e "s/$cap=$VERSION/$cap=$version/g" $1;               #ex: version=0.0.0
+    sed -i'' -e "s/$cap=\"$VERSION\"/$cap=\"$version\"/g" $1;       #ex: version="0.0.0"
+    sed -i'' -e "s/$cap = \"$VERSION\"/$cap = \"$version\"/g" $1;   #ex: version = "0.0.0",
+    sed -i'' -e "s/$cap=\'$VERSION\'/$cap=\'$version\'/g" $1;       #ex: version='0.0.0'
+    sed -i'' -e "s/$cap => \'$VERSION\'/$cap => \'$version\'/g" $1; #ex: version => '0.0.0'
+    sed -i'' -e "s/\:$cap\: $VERSION/\:$cap\: $version/g" $1;       #ex: :version: 0.0.0
+    sed -i'' -e "s/@$cat\: $VERSION/@$cat\: $version/g" $1;         #ex: @version: 0.0.0
   done 
 }
 
@@ -118,7 +118,7 @@ git pull origin master || { MSG "cannot update myself, exiting"; exit 1; }
 
 #check that new version was given and that config exists
 CONTINUE "Continue with config: \"$config\" and version: \"$version\" ? (y/n)";
-[ -z "$version" ] && { MSG "No new version given, exiting"; exit 1; }
+[ -z "$version" ] && { MSG "No new version given, exiting"; rm -rf ;exit 1; }
 source $config || { MSG "SOURCE FAILED, check config name, exiting"; exit 1; }
 
 #check that nessacary config options have been set 
@@ -142,6 +142,7 @@ git clone "$REPO" "$NAME" || { MSG "could not clone \"$NAME\" into releases, exi
 
 #fetch and merge all locations of repo 
 cd ~/.releases/$NAME || { MSG "could'nt find repo, exiting"; exit 1; }
+git init
 MSG "Starting Git source update";
 for remote_repo in $REMOTES_INCOMING; do
   remote=$( echo $remote_repo | awk -F',' '{print $1}' );
