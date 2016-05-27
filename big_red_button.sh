@@ -192,7 +192,7 @@ for remote_repo in $REMOTES_OUTGOING; do
   branch=$( echo $remote_repo | awk -F',' '{print $2}' );
   urlloc=$( echo $remote_repo | awk -F',' '{print $3}' );
   MSG "pushing changes upstream, remote: \"$remote\"";
-  git push "$remote" || MSG "no changes pushed $remote, possible failure";
+  git push "$remote" "$branch" || MSG "no changes pushed $remote, possible failure";
   git push "$remote" --tags || { MSG "problems with git push";}
 done
 
