@@ -1,6 +1,9 @@
 #!/bin/bash
 
 HELP() {
+  # Description:
+  # Outputs flag info then exits
+
   echo "Welcome to the Big Red Button, the safe way to release code to production, running is as simple as 
 
 big_red_button.sh -c \"the name of my config\" -v \"the version I want to update to\"
@@ -20,16 +23,25 @@ but what are my full options?
 }
 
 BRB_VERSION() {
+  # Description:
+  # Outputs version then exits 
+
   echo "VERSION=0.3" >&2;
   exit 1;
 }
 
 MSG() {
+  # Description:
+  # Outputs the log formated message, either to std out or to the log
+
   [ -t 1 ] && echo "[ $(date) ]: $1" >&2;
   [ ! -z "$LOG" ] && echo "[ $(date) ]: $1" >> "$LOG"
 }
 
 CONTINUE() {
+  # Description:
+  # Propmts the user for yes or no, then either coninues the program or exits the program
+
   if [ -z "$force" ]; then
     echo "$1" >&2;
     read cont
@@ -48,10 +60,16 @@ CONTINUE() {
 }
 
 VERSION_CLEANING() {
+  # Description:
+  # Cleans slashes from the versioning info
+
   echo "$1" | sed -e 's/\\//g' -e  's/\./\\\./g' || { MSG "unable to clean version, exiting"; exit 1; }
 }
 
 FILE_VERSIONING() {
+  # Description:
+  # changes the file version of various version/number formats on a given file
+
   spellings="version Version VERSION";
   for cap in $spellings; do 
     sed -i'' -e "s/$cap $VERSION/$cap $version/g" $1;               #ex: version 0.0.0
@@ -66,6 +84,10 @@ FILE_VERSIONING() {
     sed -i'' -e "s/@$cat\: $VERSION/@$cat\: $version/g" $1;         #ex: @version: 0.0.0
   done 
 }
+
+# - - - - - - - - - - - #
+# Start of main program #
+# - - - - - - - - - - - #
 
 while getopts ":hVfc:v:n:e:l:" opt; do
  case "${opt}" in
