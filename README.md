@@ -40,4 +40,4 @@ but what are my full options?
 ## Contact
 > Developer: David Molik
 
-> Email: dmolik@cshl.edu
+> Email: dmolik@nd.edu
